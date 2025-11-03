@@ -1,0 +1,306 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background: #f8fafc;
+  color: #1e293b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.app-container {
+  display: flex;
+  width: 90%;
+  height: 90vh;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: #1e293b;
+  color: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 25px 20px;
+  transition: background 0.3s ease;
+}
+
+.sidebar .logo {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.sidebar nav ul,
+.sidebar nav .menu {
+  list-style: none;
+}
+
+.sidebar .menu li {
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.sidebar .menu li.active,
+.sidebar .menu li:hover {
+  background: #334155;
+}
+
+/* Buttons */
+.pdf-btn,
+#toggleHistory {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #475569;
+  color: #f8fafc;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.pdf-btn:hover,
+#toggleHistory:hover {
+  background: #64748b;
+}
+
+/* Chat history list */
+#historyList {
+  list-style: none;
+  margin-top: 10px;
+  background: #334155;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+#historyList li {
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#historyList li:hover {
+  background: #475569;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Profile */
+.sidebar .profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar .profile img {
+  border-radius: 50%;
+}
+
+/* Main */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f9fafb;
+  transition: background 0.3s ease;
+}
+
+/* Top bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  transition: background 0.3s ease;
+}
+
+.top-bar h1 {
+  font-size: 1.2rem;
+}
+
+.model-selector button {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.model-selector button.active {
+  background: #1e293b;
+  color: white;
+}
+
+/* Chat section */
+.chat-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 25px 40px;
+}
+
+.chat-box {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-bottom: 20px;
+}
+
+.chat-message {
+  max-width: 70%;
+  padding: 12px 16px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  line-height: 1.4;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.chat-message.ai {
+  background: white;
+  align-self: flex-start;
+}
+
+.chat-message.user {
+  background: #6366f1;
+  color: white;
+  align-self: flex-end;
+}
+
+/* Input */
+.chat-input {
+  display: flex;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.chat-input button {
+  background: #6366f1;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.chat-input button:hover {
+  background: #4f46e5;
+}
+
+/* 🌙 Dark mode styles */
+body.dark {
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+body.dark .sidebar {
+  background: #0f172a;
+}
+
+body.dark .main-content {
+  background: #1e293b;
+}
+
+body.dark .top-bar {
+  background: #1e293b;
+  border-bottom-color: #334155;
+}
+
+body.dark .chat-message.ai {
+  background: #334155;
+  color: #f1f5f9;
+}
+
+body.dark .chat-input input {
+  background: #334155;
+  color: #f1f5f9;
+  border-color: #475569;
+}
+
+.profile img {
+  width: 30px; /* fixed width */
+  height: 30px; /* fixed height */
+  object-fit: cover; /* makes sure the image doesn’t stretch */
+  border-radius: 50%; /* makes it circular */
+}
+
+/* .sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #1e1e2f;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: width 0.3s ease;
+  position: relative;
+} */
+
+.collapse-btn {
+  position: absolute;
+  top: 1rem;
+  right: -1.5rem;
+  background: #1e1e2f;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  font-size: 1.2rem;
+}
+
+/* Collapsed state */
+.sidebar.collapsed {
+  width: 70px;
+}
+
+/* Hide text in collapsed mode */
+.sidebar.collapsed .logo,
+.sidebar.collapsed .menu li,
+.sidebar.collapsed .pdf-btn,
+.sidebar.collapsed .profile span,
+.sidebar.collapsed .history-section {
+  display: none;
+}
+
+/* Adjust icon-only layout */
+.sidebar.collapsed .profile img {
+  width: 40px;
+  height: 40px;
+  margin: auto;
+}

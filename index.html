@@ -1,11 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Hello, World!</h1>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MotionAI - Fitness Chat</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <button id="collapseBtn" class="collapse-btn">☰</button>
+        <h2 class="logo">🏃‍♂️ MotionAI</h2>
+
+        <nav>
+          <button class="pdf-btn">📄 Convert to PDF</button>
+
+          <div class="history-section">
+            <button id="toggleHistory">🕓 Chat History ▼</button>
+            <ul id="historyList" class="hidden">
+              <li>Leg Day Routine</li>
+              <li>Meal Plan Ideas</li>
+              <li>Morning Stretch Tips</li>
+            </ul>
+          </div>
+
+          <ul class="menu">
+            <li class="active">💬 Chat</li>
+            <li>📈 Progress</li>
+            <li>🍎 Nutrition</li>
+            <li>⚙️ Settings</li>
+          </ul>
+        </nav>
+
+        <div class="profile">
+          <img src="gymbros.jpg" alt="User-Profile" />
+          <span>Alex</span>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="main-content">
+        <header class="top-bar">
+          <h1>AI Fitness Coach</h1>
+          <div class="model-selector">
+            <button class="active">Meet Our Team</button>
+            <button>Contact Us</button>
+            <button id="themeToggle">🌙</button>
+          </div>
+        </header>
+
+        <section class="chat-section">
+          <div class="chat-box" id="chatBox">
+            <div class="chat-message ai">
+              <p>
+                👋 Hi Alex! I’m your MotionAI coach. How can I help you today?
+              </p>
+            </div>
+            <div class="chat-message user">
+              <p>What’s a good 30-minute leg workout?</p>
+            </div>
+            <div class="chat-message ai">
+              <p>
+                Here’s a great 30-minute leg routine: <br />
+                - Squats: 3 sets of 12 reps <br />
+                - Lunges: 3 sets per leg <br />
+                - Jump squats: 3 sets of 15 reps <br />
+                - Calf raises: 3 sets of 20 reps <br />Stretch afterward for
+                recovery 💪
+              </p>
+            </div>
+          </div>
+
+          <!-- Input box -->
+          <div class="chat-input">
+            <input
+              id="user-prompt"
+              type="text"
+              placeholder="Ask MotionAI anything..."
+            />
+            <button id="sendBtn">Send</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>
