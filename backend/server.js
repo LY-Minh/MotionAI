@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 import cors from "cors";
 import crypto from "crypto";
 import dotenv from "dotenv";
-
+import RoutineService from "../services/Routine/getRoutine.js";
 dotenv.config();
 
 const app = express();
@@ -91,6 +91,41 @@ app.post("/verify-otp", async (req, res) => {
   otpStore.delete(chatId);
 
   res.json({ success: true, message: "OTP verified!" });
+});
+
+app.post("/generate-routine", async (req, res) => {
+  try {
+    const userPrompt = req.body.prompt;
+
+    if (!userPrompt) {
+      return res.status(400).json({
+        status: "fail",
+        error: "missing_prompt",
+      });
+    }
+
+    // Inject prompt into the service
+    const routineService = new RoutineService();
+    routineService.userInput = userPrompt;
+
+    const routine = await routineService.generateRoutine();
+
+    if (!routineService.validateRoutine(routine)) {
+      return res.status(422).json({
+        status: "fail",
+        error: "invalid_structure",
+      });
+    }
+
+    return res.json(routine);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "fail",
+      error: "internal_error",
+      message: error.message,
+    });
+  }
 });
 
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));

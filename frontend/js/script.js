@@ -76,16 +76,38 @@ document.addEventListener("DOMContentLoaded", () => {
     textarea.value = "";
     textarea.style.height = "auto"; // Reset height after sending
 
-    const aiReply =
-      "Your API response goes here. For example, here is your full workout routine. You can copy it and paste directly into your word document.";
+    // --- REAL API CALL TO YOUR BACKEND ---
+    async function fetchAIResponse(prompt) {
+      try {
+        const res = await fetch("http://localhost:3000/generate-routine", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt }),
+        });
+
+        const data = await res.json();
+
+        if (data.status === "success" && data.data) {
+          return JSON.stringify(data.data, null, 2); // pretty JSON string
+        } else {
+          return "Sorry, I could not generate a workout routine.";
+        }
+      } catch (e) {
+        console.error("API error:", e);
+        return "Server error. Please try again later.";
+      }
+    }
 
     // Fake AI delay
-    setTimeout(() => {
+    setTimeout(async () => {
       typingBubble.remove(); // remove typing dots
 
       const aiWrapper = document.createElement("div");
       aiWrapper.classList.add("message-wrapper", "ai");
-      console.log([...aiReply]);
+
+      // Get real AI response
+      const aiReply = await fetchAIResponse(prompt);
+
       // --- AI BUBBLE ---
       const aiBubble = document.createElement("div");
       aiBubble.classList.add("chat-message", "ai");
@@ -109,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
         minute: "2-digit",
       });
 
-      // Row containing bubble + copy button
+      // --- Row containing bubble + copy button ---
       const row = document.createElement("div");
       row.style.display = "flex";
       row.style.alignItems = "center";
@@ -118,7 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
       row.appendChild(aiBubble);
       row.appendChild(copyBtn);
 
-      // Put inside wrapper
       aiWrapper.appendChild(row);
       aiWrapper.appendChild(timestamp);
 
