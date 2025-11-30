@@ -1,46 +1,73 @@
-async function getRoutine() {
-    const userPrompt = document.getElementById('user-prompt').value;
-    const bearerToken = `bearer ${"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"}`;
-    //to do : enhance the prompt to provide a clear and consistent structure for the routine
-    const prompt = `Generate a detailed workout routine based on the following user input: ${userPrompt}. The routine should include warm-up exercises, main workout sets, and cool-down stretches. Provide specific exercises, repetitions, and durations where applicable.\
-    make it a 4 weeks rout`;
+import { GoogleGenAI } from "@google/genai";
+
+
+class RoutineService {
+    constructor() {
+        this.ai = new GoogleGenAI({});
+        this.userInput = document.getElementById("userInput").value;
+        this.systemInstruction = `
+This is the user prompt you need to analyze and respond to:
+"${this.userInput}"
+You are a strict API endpoint for a fitness application. 
+Your ONLY job is to accept a user prompt and return a JSON object.
+
+RULES:
+1. Analyze the user's input.
+2. If the input is NOT related to physical fitness, working out, body parts, or gym training, return strictly: {"status": "fail", "error": "irrelevant_prompt"}
+3. If the input IS related, generate a 7-day workout schedule based on their request.
+4. Return strictly: {"status": "success", "week_plan": [ ... ]}
+5. The "week_plan" must be an array of 7 objects (Monday to Sunday).
+6. Each day object must have: "day", "focus" (e.g., "Chest", "Rest"), and "exercises" (array of objects with "name", "sets", "reps").
+
+Do not include any markdown formatting (like \`\`\`json). Return raw JSON only.
+Expected JSON schema:
+{
+  "status": "success",
+  "week_plan": [
+    { "day": "Monday", "focus": "Chest", "exercises": [...] },
+    { "day": "Tuesday", "focus": "Rest", "exercises": [] }
+    // ... etc
+  ]
+}
+`; 
+
+}
+    async generateRoutine() {
     try {
-        const response = await fetch('/api/getRoutine', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': bearerToken
-            },
-            body: JSON.stringify({ prompt: userPrompt })
+        const response = await this.ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: this.systemInstruction,
+        config: {
+            responseMimeType: "application/json",
+        },        
         });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+        const routine = JSON.parse(response.text);
+        if (routine.status === "fail") {
+            throw new Error(routine.error);
         }
-
-        const data = await response.json();
-        const routine = data[0].content.text || 'No routine generated.';
-        /*[
-    {
-        "id": "msg_67b73f697ba4819183a15cc17d011509",
-        "type": "message",
-        "role": "assistant",
-        "content": [
-            {
-                "type": "output_text",
-                "text": "Under the soft glow of the moon, Luna the unicorn danced through fields of twinkling stardust, leaving trails of dreams for every child asleep.",
-                "annotations": []
-            }
-        ]
-    }
-]*/ //from https://platform.openai.com/docs/guides/text
-
-        //routine here is a string 
-
-        //to do : parse the string into a more structured format for weekly routine display
         return routine;
-    } catch (error) {
-        console.error('Error fetching routine:', error);
+    }   catch (error) {
+        console.error('Error generating routine:', error);
         throw error;
     }
 }
+    // Validate the structure of the routine, this is important to ensure data integrity
+    validateRoutine(routine) {
+    if (routine.status !== "success" || !Array.isArray(routine.week_plan) || routine.week_plan.length !== 7) {
+        return false;
+    }
+    for (const day of routine.week_plan) {
+        if (typeof day.day !== "string" || typeof day.focus !== "string" || !Array.isArray(day.exercises)) {
+            return false;
+        }
+        for (const exercise of day.exercises) {
+            if (typeof exercise.name !== "string" || typeof exercise.sets !== "number" || typeof exercise.reps !== "number") {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+}
+
+export default RoutineService;
