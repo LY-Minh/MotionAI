@@ -8,6 +8,7 @@ class AuthService {
     'Content-Type': 'application/json'
 };
     }
+    // Send verification code to the given phone number
     async sendCode(phoneNumber) {
         const url = `${this.baseURL}/sendVerificationMessage`;
         const code = await fetch(url, {
@@ -28,21 +29,7 @@ class AuthService {
         const responseData = await code.json();
         return responseData;
     }
-    async checkSendAbility(phoneNumber) {
-        const url = `${this.baseURL}/checkSendAbility`;
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: this.headers,
-            body: JSON.stringify({ 
-                'phone_number': phoneNumber
-                })
-            });
-        if (response){
-            const responseData = await response.json();
-            const {request_id} = responseData;
-            return request_id;
-        }
-    }
+    // Verify the code entered by the user
     async verifyCode(code, request_id) {
         const url = `${this.baseURL}/checkVerificationStatus`;
         const response = await fetch(url, {
@@ -59,10 +46,19 @@ class AuthService {
         const responseData = await response.json();
         return responseData;
     }
+    // Validate phone number format
     validatePhoneNumber(phoneNumber) {
         const phoneRegex = /^\+\d{10,15}$/;
         return phoneRegex.test(phoneNumber);
     }
+    setCookie(name, value, days) {
+        const d = new Date();
+        d.setTime(d.getTime() + (days*24*60*60*1000));
+        const expires = "expires="+ d.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+
+    
 }
 
 export default new AuthService();
