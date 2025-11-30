@@ -29,6 +29,21 @@ class AuthService {
         const responseData = await code.json();
         return responseData;
     }
+    //send code json response 
+    /*
+    *{
+    "ok": true,
+    "result": {
+        "request_id": "152352603002796",
+        "phone_number": "85598845868",
+        "request_cost": 0,
+        "remaining_balance": 0,
+        "delivery_status": {
+            "status": "sent",
+            "updated_at": 1764492997
+        }
+    }
+*/
     // Verify the code entered by the user
     async verifyCode(code, request_id) {
         const url = `${this.baseURL}/checkVerificationStatus`;
